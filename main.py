@@ -1,18 +1,17 @@
 class Category:
     def __init__(self, name):
-        self.__name = name
-        self.__products = []
-
-    def add_product(self, product):
-        self.__products.append(product)
+        self.name = name
+        self._products = []
 
     @property
     def products(self):
-        return [f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт." for product in self.__products]
+        return self._products
+
+    def add_product(self, product):
+        self._products.append(product)
 
     def __str__(self):
-        return f"{self.__name}, количество продуктов: {len(self.__products)} шт."
-
+        return f"{self.name}: {', '.join(str(product) for product in self.products)}"
 
 class Product:
     def __init__(self, name, price, quantity):
@@ -38,9 +37,9 @@ class Product:
         else:
             self.__price = new_price
 
-    @staticmethod
-    def create_product(name, price, quantity):
-        return Product(name, price, quantity)
+    @classmethod
+    def create_product(cls, **kwargs):
+        return cls(**kwargs)
 
     def __str__(self):
         return f"{self.name}, {self.__price} руб. Остаток: {self.quantity} шт."
